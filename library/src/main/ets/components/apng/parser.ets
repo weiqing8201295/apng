@@ -67,8 +67,8 @@ export default function parseAPNG(buffer:Uint8Array) {
         frame.height = dv.getUint32(off + 8 + 8);
         frame.left = dv.getUint32(off + 8 + 12);
         frame.top = dv.getUint32(off + 8 + 16);
-        var delayN = dv.getUint16(off + 8 + 20);
-        var delayD = dv.getUint16(off + 8 + 22);
+        let delayN = dv.getUint16(off + 8 + 20);
+        let delayD = dv.getUint16(off + 8 + 22);
         if (delayD === 0) {
           delayD = 100;
         }
@@ -195,7 +195,7 @@ function subBuffer(bytes:Uint8Array, start:number, length:number) {
  * @param {Uint8Array} dataBytes
  * @return {Uint8Array}
  */
-var makeChunkBytes = function (type:string, dataBytes:Uint8Array) {
+function makeChunkBytes (type:string, dataBytes:Uint8Array) {
   const crcLen = type.length + dataBytes.length;
   const bytes = new Uint8Array(crcLen + 8);
   const dv = new DataView(bytes.buffer);
@@ -203,11 +203,11 @@ var makeChunkBytes = function (type:string, dataBytes:Uint8Array) {
   dv.setUint32(0, dataBytes.length);
   bytes.set(makeStringArray(type), 4);
   bytes.set(dataBytes, 8);
-  var crc = crc32(bytes, 4, crcLen);
+  let crc = crc32(bytes, 4, crcLen);
   dv.setUint32(crcLen + 4, crc);
   return bytes;
 };
 
-var makeDWordArray = function (x:number) {
+function makeDWordArray (x:number) {
   return new Uint8Array([(x >>> 24) & 0xff, (x >>> 16) & 0xff, (x >>> 8) & 0xff, x & 0xff]);
 };
